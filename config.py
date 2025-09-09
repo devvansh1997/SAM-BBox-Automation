@@ -2,7 +2,8 @@
 DEVICE = "cuda" # or "cpu"
 
 # Model
-MODEL_ID = "IDEA-Research/grounding-dino-base"
+DET_MODEL_ID = "IDEA-Research/grounding-dino-base"
+SEG_MODEL_ID = "facebook/sam-vit-base"
 
 # Inference params
 BOX_THRESHOLD = 0.4

@@ -1,4 +1,5 @@
 from detector import Detector
+from segmenter import Segmenter
 from utils import annotate_image
 import argparse
 
@@ -12,11 +13,27 @@ if __name__ == "__main__":
     # initialize the detector
     dino = Detector()
 
+    # intialize the segmentor
+    sam = Segmenter()
+
     # get predictions for bounding boxes
     detections, labels = dino.predict(
         image_path=args.image,
         text_prompt=args.prompt
     )
+
+    # if objects are found
+    if len(detections) > 0:
+
+        # get segmentation results back
+        masks = sam.segment(
+            image_path=args.image,
+            boxes=detections.xyxy
+        )
+
+        # attach new found masks to detections object
+        detections.mask = masks
+    
 
     # annotate image with predictions
     annotate_image = annotate_image(

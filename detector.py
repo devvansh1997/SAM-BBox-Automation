@@ -10,12 +10,12 @@ class Detector:
         loading the model should be done once to increase speed, 
         so here I create a class for the detector
         """
-        print("---- Loading Model ----")
+        print("---- Loading Detection Model ----")
         # load model on GPU
         self.device = torch.device(config.DEVICE)
-        self.model = AutoModelForZeroShotObjectDetection.from_pretrained(config.MODEL_ID).to(self.device)
-        self.processor = AutoProcessor.from_pretrained(config.MODEL_ID)
-        print(f"---- Model {config.MODEL_ID} has been loaded on {config.DEVICE} ----")
+        self.model = AutoModelForZeroShotObjectDetection.from_pretrained(config.DET_MODEL_ID).to(self.device)
+        self.processor = AutoProcessor.from_pretrained(config.DET_MODEL_ID)
+        print(f"---- Model {config.DET_MODEL_ID} has been loaded on {config.DEVICE} ----")
     
     def predict(
             self, 
@@ -63,6 +63,6 @@ class Detector:
             xyxy=results["boxes"].cpu().numpy(),
             confidence=results["scores"].cpu().numpy(),
         )
-        labels = results["labels"]
+        labels = results["text_labels"]
 
         return detections, labels
