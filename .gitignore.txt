@@ -1,0 +1,12 @@
+# Virtual Environment
+third_assignment/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Model weights (very important!)
+*.pth
+
+# OS-specific files
+.DS_Store
