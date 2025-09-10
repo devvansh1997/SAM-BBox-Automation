@@ -1,12 +1,14 @@
 # Virtual Environment
 third_assignment/
 
+data/
+
 # Python cache
 __pycache__/
 *.pyc
 
 # Model weights (very important!)
-*.pth
+*.pt
 
 # OS-specific files
 .DS_Store

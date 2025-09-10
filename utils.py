@@ -1,5 +1,3 @@
-# In utils.py
-
 import cv2
 import supervision as sv
 from PIL import Image
@@ -47,3 +45,30 @@ def annotate_image(
 
     # Convert the annotated image from OpenCV's BGR format back to a PIL Image (RGB)
     return Image.fromarray(cv2.cvtColor(annotated_image_np, cv2.COLOR_BGR2RGB))
+
+def calculate_dice_score(predicted_mask: np.ndarray, ground_truth_mask: np.ndarray) -> float:
+    """
+    Calculates the Dice Score between two binary masks.
+
+    Args:
+        predicted_mask (np.ndarray): The binary mask predicted by the model.
+        ground_truth_mask (np.ndarray): The binary ground truth mask.
+
+    Returns:
+        float: The Dice Score, ranging from 0 (no overlap) to 1 (perfect overlap).
+    """
+    # Ensure masks are boolean
+    predicted_mask = predicted_mask.astype(bool)
+    ground_truth_mask = ground_truth_mask.astype(bool)
+
+    # Calculate intersection and the total number of pixels in both masks
+    intersection = np.sum(predicted_mask & ground_truth_mask)
+    total_pixels = np.sum(predicted_mask) + np.sum(ground_truth_mask)
+
+    # Handle the edge case where both masks are empty
+    if total_pixels == 0:
+        return 1.0  # Perfect score if there was nothing to segment and we predicted nothing
+
+    # Calculate the Dice Score
+    dice_score = (2.0 * intersection) / total_pixels
+    return dice_score

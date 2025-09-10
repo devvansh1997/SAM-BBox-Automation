@@ -14,7 +14,7 @@ if __name__ == "__main__":
     dino = Detector()
 
     # intialize the segmentor
-    sam = Segmenter()
+    sam2 = Segmenter()
 
     # get predictions for bounding boxes
     detections, labels = dino.predict(
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     if len(detections) > 0:
 
         # get segmentation results back
-        masks = sam.segment(
+        masks = sam2.segment(
             image_path=args.image,
             boxes=detections.xyxy
         )
