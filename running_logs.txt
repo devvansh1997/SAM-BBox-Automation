@@ -15,3 +15,21 @@ Processed 100 of 100 images.
 --- Average Dice Scores ---
 Pipeline A (Baseline: DINO -> SAM2):    0.4253
 Pipeline B (New: YOLOv11 -> SAM2):   0.6321
+Initializing models and dataset...
+---- Loading Detection Model ----
+Fetching 1 files: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 7371.36it/s]
+Fetching 1 files: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 10205.12it/s]
+---- Model IDEA-Research/grounding-dino-base has been loaded on cuda ----
+---- Loading YOLOv8 Model ----
+---- Model yolo11x.pt has been loaded ----
+---- Loading Segmentation Model ----
+---- Model sam2_l.pt has been loaded ----
+Models and dataset initialized.
+
+Processing random image #89: .\data\CamVid\val\Seq05VD_f02970.png
+
+--- Running Pipeline A (DINO -> SAM2) ---
+DINO pipeline output saved to: output_dino_pipeline.jpg
+
+--- Running Pipeline B (YOLOv11 -> SAM2) ---
+YOLO pipeline output saved to: output_yolo_pipeline.jpg
