@@ -72,3 +72,65 @@ def calculate_dice_score(predicted_mask: np.ndarray, ground_truth_mask: np.ndarr
     # Calculate the Dice Score
     dice_score = (2.0 * intersection) / total_pixels
     return dice_score
+
+def ensemble_detections(
+    dino_detections: sv.Detections,
+    owl_detections: sv.Detections,
+    iou_threshold: float = 0.5
+) -> (sv.Detections, list[str]):
+    """
+    Ensembles detections from two models based on IoU agreement.
+
+    Args:
+        dino_detections (sv.Detections): Detections from the first model.
+        owl_detections (sv.Detections): Detections from the second model.
+        iou_threshold (float): The IoU threshold to consider boxes as a match.
+
+    Returns:
+        sv.Detections: A new Detections object with the merged, high-confidence boxes.
+        list[str]: The corresponding labels for the ensembled detections.
+    """
+    if len(dino_detections) == 0 or len(owl_detections) == 0:
+        return sv.Detections.empty(), []
+
+    # Calculate the IoU between all pairs of boxes
+    iou_matrix = sv.box_iou_batch(dino_detections.xyxy, owl_detections.xyxy)
+
+    # Find matches where IoU is above the threshold
+    matches = np.where(iou_matrix >= iou_threshold)
+    dino_match_indices, owl_match_indices = matches[0], matches[1]
+
+    # Create a set of owl indices that have been matched to avoid duplicates
+    matched_owl_indices = set(owl_match_indices)
+
+    ensembled_boxes = []
+    ensembled_scores = []
+    ensembled_labels = []
+
+    # For each match, average the boxes and scores
+    for dino_idx, owl_idx in zip(dino_match_indices, owl_match_indices):
+        # Average the box coordinates
+        avg_box = (dino_detections.xyxy[dino_idx] + owl_detections.xyxy[owl_idx]) / 2
+        ensembled_boxes.append(avg_box)
+
+        # Average the confidence scores
+        avg_score = (dino_detections.confidence[dino_idx] + owl_detections.confidence[owl_idx]) / 2
+        ensembled_scores.append(avg_score)
+        
+        # We can just take the label from one of the models (e.g., DINO)
+        # Note: You need to pass the labels into this function if they are not part of the Detections object.
+        # Let's assume we pass them separately.
+        
+    # This is a placeholder for labels. We'll adjust the main script to pass them.
+    # For now, let's just return the detections.
+
+    if not ensembled_boxes:
+        return sv.Detections.empty(), []
+
+    ensembled_detections = sv.Detections(
+        xyxy=np.array(ensembled_boxes),
+        confidence=np.array(ensembled_scores)
+    )
+    
+    # We will handle labels in the main script for simplicity
+    return ensembled_detections, []
