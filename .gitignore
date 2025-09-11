@@ -10,5 +10,8 @@ __pycache__/
 # Model weights (very important!)
 *.pt
 
+# video
+*.mkv
+
 # OS-specific files
 .DS_Store

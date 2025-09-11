@@ -26,10 +26,10 @@ def main(args):
 
     # --- PIPELINE 1: GROUNDING DINO -> SAM2 ---
     print("\n--- Running Pipeline A (DINO -> SAM2) ---")
-    dino_prompt = "person, bicycle, car, motorcycle, bus, truck"
+    # dino_prompt = "person, bicycle, car, motorcycle, bus, truck"
     try:
         dino_detections, dino_labels = dino_detector.predict(
-            image_path, dino_prompt, box_threshold=0.25, text_threshold=0.25
+            image_path, box_threshold=0.25, text_threshold=0.25
         )
 
         if len(dino_detections) > 0:

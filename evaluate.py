@@ -7,7 +7,7 @@ from dataset import CamVidDataset
 from detector import Detector as GroundingDinoDetector
 from yolo_detector import YOLODetector
 from segmenter import Segmenter
-from utils import calculate_dice_score, ensemble_detections
+from utils import calculate_dice_score
 
 def main(args):
     # --- INITIALIZATION ---

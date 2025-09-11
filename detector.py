@@ -21,8 +21,8 @@ class Detector:
             self, 
             image_path: str, 
             text_prompt: str = "person . car . bus . motorcycle",
-            box_threshold: float = 0.35,
-            text_threshold: float = 0.25
+            box_threshold: float = 0.2,
+            text_threshold: float = 0.2
             ) -> tuple[sv.Detections, list[str]]:
         """
         Performs inference on a single local image.
